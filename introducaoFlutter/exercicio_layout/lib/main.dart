@@ -36,29 +36,28 @@ class ProfileScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                CircleAvatar(
-                  radius: 80,
-                  backgroundImage: AssetImage('assets/profile.jpg'),
-                  backgroundColor: Colors.transparent,
-                ),
-                Positioned(
-                  bottom: 0,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 18,
-                    child: Icon(
-                      Icons.edit,
-                      color: const Color(0xFF86AAE9),
-                      size: 18,
+            // Foto de perfil com sombra e borda circular
+            Center(
+              child: Container(
+                width: 140,
+                height: 140,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color.fromARGB(106, 134, 170, 233),
+                      blurRadius: 10,
+                      offset: Offset(0, 4),
                     ),
+                  ],
+                  image: DecorationImage(
+                    image: AssetImage('assets/profile.jpg'), // Caminho para a foto no diretório assets
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ],
+              ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             const Text('Julia', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
             const Text(
               'Desenvolvedora | Apaixonada por tecnologia',
