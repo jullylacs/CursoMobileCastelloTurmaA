@@ -9,6 +9,7 @@ class TelaTodoList extends StatefulWidget{
 class _TelaTodoListState extends State<TelaTodoList>{
   //atributos
   String _nome = "";
+  // ignore: unused_field
   bool _darkMode = false;
   List<String> _tarefas = [];
   TextEditingController _tarefasController = TextEditingController();
