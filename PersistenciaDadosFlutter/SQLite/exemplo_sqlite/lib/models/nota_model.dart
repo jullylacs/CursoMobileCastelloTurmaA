@@ -1,4 +1,4 @@
-//criar a classe model para notas
+//criar a classe model para Notas
 
 class Nota{
   //atributos
@@ -6,18 +6,33 @@ class Nota{
   final String titulo;
   final String conteudo;
 
-  //construtores
-  Nota({this.id, required this.titulo, required this.conteudo}); //construtor com os atributos, required = obrigatório
+  //construtor
+  Nota({this.id, required this.titulo, required this.conteudo}); // construtor com os atributos , required é obrigatório
 
   //métodos
   //converter dados para o banco de dados
-  //método MAP => converte um objeto da classe para um MAP (para inserir no banco de dados)
-  //MAP - lista onde a ordem é dada por uma chave associada a um valor
-  Map<String,dynamic>toMAp(){
+  // método MAP => converte um objeto da classe Nota para um Map(para inserir no Banco de Dados)
+  Map<String,dynamic>toMap(){
     return {
       "id" : id,
-      "titulo" : titulo,
-      "conteudo" : conteudo
+      "titulo": titulo,
+      "conteudo": conteudo
     };
   }
+
+  // factory -> converte dados do BD para um Obj
+  factory Nota.fromMap(Map<String,dynamic> map){
+    return Nota(
+      id: map ["id"] as int, //cast
+      titulo: map["titulo"] as String,
+      conteudo: map["conteudo"] as String);
+  }
+
+//toString
+@override
+  String toString() {
+    // TODO: implement toString
+    return "Nota(id: $id, Título: $titulo, Conteudo: $conteudo)";
+  }
+
 }
