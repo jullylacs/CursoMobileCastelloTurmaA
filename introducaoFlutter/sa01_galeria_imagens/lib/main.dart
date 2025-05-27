@@ -7,6 +7,7 @@ void main(){
 }
 
 //criar a Janela Principal
+// ignore: must_be_immutable
 class MyApp extends StatelessWidget{
   //criar lista de itens
   List<String> _imagens = [
