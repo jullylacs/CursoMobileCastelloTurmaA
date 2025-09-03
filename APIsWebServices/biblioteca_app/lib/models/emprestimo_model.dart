@@ -8,6 +8,10 @@ class EmprestimoModel {
   final String dataDevolucao;
   final bool devolvido;
 
+  var tituloLivro;
+
+  var nomeUsuario;
+
   //cosntrutor
   EmprestimoModel({
     this.id,
@@ -38,6 +42,8 @@ class EmprestimoModel {
     "dataDevolucao":dataDevolucao,
     "devolvido":devolvido
   };
+
+  copyWith({required bool devolvido}) {}
 
 
 }
