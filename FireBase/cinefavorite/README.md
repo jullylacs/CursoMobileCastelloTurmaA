@@ -65,6 +65,13 @@ classDiagram
 
 ```
 
+2. ### Diagrama de uso
+
+
+3. ### Diagrama de Fluxo
+
+
 ## Prototipagem
+- https://www.figma.com/design/E8aNET81uq5MdkpZYOap9k/Untitled?node-id=1-2&m=dev&t=KACHXyiVQuOvIGJv-1
 
 ## Codificação
