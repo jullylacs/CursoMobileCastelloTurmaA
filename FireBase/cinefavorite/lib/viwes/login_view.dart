@@ -1,7 +1,6 @@
 import 'package:cinefavorite/viwes/register_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cinefavorite/viwes/favorite_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -12,24 +11,25 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   //atributos
-  final FirebaseAuth _auth = FirebaseAuth.instance; //controller para autenticar usuários na plataforma do FireBase
-  final _emailField = TextEditingController();//controller para o campo de texto  (email)
-  final _senhaField = TextEditingController();//controller para o campo de texto  (senha)
+  final _emailField = TextEditingController();
+  final _senhaField = TextEditingController();
+  final _authController = FirebaseAuth.instance; //controller para manipulação do usuário no firebase auth
   bool _senhaOculta = true;
 
-  //método de login
-  void _login() async{
+  //método
+  void _login() async {
     try {
       //solicitar a autenticação do usuário
-      await _auth.signInWithEmailAndPassword(
-        email: _emailField.text.trim(), 
-        password: _senhaField.text);
-      //não precisa de Navigator , pois o AuthView(StreamBuilder)
-      //já faz o direcionamento ao modificar o Status do Usuário
-    } on FirebaseAuthException catch (e) { //tratamento mais especifico
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Falha ao Fazer Login $e"))
+      await _authController.signInWithEmailAndPassword(
+        email: _emailField.text.trim(),
+        password: _senhaField.text,
       );
+      //não precisa do Navigator, pois usaremso o StreamBuilder
+      // já faz o direcionamento automático para a tela de tarefas
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Falha ao Fazer Login $e")));
     }
   }
 
@@ -37,7 +37,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login"),),
+      appBar: AppBar(title: Text("Login")),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -52,24 +52,30 @@ class _LoginViewState extends State<LoginView> {
               controller: _senhaField,
               decoration: InputDecoration(
                 labelText: "Senha",
-                suffixIcon: IconButton(onPressed: ()=>{
-                  setState(() {
-                    _senhaOculta = !_senhaOculta;
-                  })
-                }, icon: _senhaOculta ? Icon(Icons.visibility) : Icon(Icons.visibility_off))
+                suffix: IconButton(
+                  onPressed: () => setState(() {
+                    _senhaOculta =
+                        !_senhaOculta; //inverte o valor da variável booleana
+                  }),
+                  icon: _senhaOculta
+                      ? Icon(Icons.visibility)
+                      : Icon(Icons.visibility_off),
                 ),
+              ),
               obscureText: _senhaOculta,
             ),
-            SizedBox(height: 20,),
+            SizedBox(height: 20),
             ElevatedButton(onPressed: _login, child: Text("Login")),
             TextButton(
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>RegistroView()));
-              }, 
-              child: Text("Não tem uma conta? Registre-se!"))
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RegisterView()),
+              ),
+              child: Text("Não tem uma conta? Registre-se"),
+            ),
           ],
-        ), 
         ),
+      ),
     );
   }
 }

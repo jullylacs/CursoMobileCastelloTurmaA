@@ -1,45 +1,43 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class RegistroView extends StatefulWidget {
-  const RegistroView({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<RegistroView> createState() => _RegistroViewState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _RegistroViewState extends State<RegistroView> {
+class _RegisterViewState extends State<RegisterView> {
   //atributos
-  final _auth = FirebaseAuth.instance;
   final _emailField = TextEditingController();
   final _senhaField = TextEditingController();
-  final _confirmarSenhaField = TextEditingController();
+  final _confSenhaField = TextEditingController();
+  final _authController = FirebaseAuth.instance; //controlador do Firebase Auth
   bool _senhaOculta = true;
-  bool _confirmarSenhaOculta = true;
+  bool _confSenhaOculta = true;
 
-  //método de registro
-  void _registrar() async {
-    if (_confirmarSenhaField.text != _senhaField.text) {
-      throw Exception("Senhas Diferentes");
-    }
+  //método _registrar
+  void _registrar() async{
+    if(_senhaField.text != _confSenhaField.text) return;//interrompe o método se senhas diferentes
     try {
-      await _auth.createUserWithEmailAndPassword(
-        email: _emailField.text.trim(),
-        password: _senhaField.text.trim(),
-      );
-      Navigator.pop(context);
-      // ao criar usuário , é logado automaticamente para a tela de tarefas
+      await _authController.createUserWithEmailAndPassword(
+        email: _emailField.text.trim(), 
+        password: _senhaField.text);
+      Navigator.pop(context); //fecha a tela de Registro
+      // é logado automaticamente após o cadastro
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Falha ao Criar Usuário: $e"))
+        SnackBar(content: Text("Falha ao registrar: $e"))
       );
     }
   }
 
+  //build da tela
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Registro"),),
+      appBar: AppBar(title: Text("Registro")),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
@@ -54,31 +52,40 @@ class _RegistroViewState extends State<RegistroView> {
               controller: _senhaField,
               decoration: InputDecoration(
                 labelText: "Senha",
-                suffixIcon: IconButton(onPressed: ()=>{
-                  setState(() {
-                    _senhaOculta = !_senhaOculta;
-                  })
-                }, icon: _senhaOculta ? Icon(Icons.visibility) : Icon(Icons.visibility_off))
+                suffix: IconButton(
+                  onPressed: () => setState(() {
+                    _senhaOculta =
+                        !_senhaOculta; //inverte o valor da variável booleana
+                  }),
+                  icon: _senhaOculta
+                      ? Icon(Icons.visibility)
+                      : Icon(Icons.visibility_off),
                 ),
+              ),
               obscureText: _senhaOculta,
             ),
             TextField(
-              controller: _confirmarSenhaField,
+              controller: _confSenhaField,
               decoration: InputDecoration(
-                labelText: "Confirmar Senha",
-                suffixIcon: IconButton(onPressed: ()=>{
-                  setState(() {
-                    _confirmarSenhaOculta = !_confirmarSenhaOculta;
-                  })
-                }, icon: _confirmarSenhaOculta ? Icon(Icons.visibility) : Icon(Icons.visibility_off))
+                labelText: "Senha",
+                suffix: IconButton(
+                  onPressed: () => setState(() {
+                    _confSenhaOculta =
+                        !_confSenhaOculta; //inverte o valor da variável booleana
+                  }),
+                  icon: _confSenhaOculta
+                      ? Icon(Icons.visibility)
+                      : Icon(Icons.visibility_off),
                 ),
-              obscureText: _confirmarSenhaOculta,
+              ),
+              obscureText: _confSenhaOculta,
             ),
-            SizedBox(height: 20,),
+
+            SizedBox(height: 20),
             ElevatedButton(onPressed: _registrar, child: Text("Registrar")),
           ],
-        ), 
         ),
+      ),
     );
   }
 }
