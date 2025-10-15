@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "geolocator": "^2.1.5",
+    "geocoding": "^2.0.1",
+    "http": "^0.0.1-security",
+    "image-picker": "^0.3.1"
+  }
+}
